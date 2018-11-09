@@ -1,12 +1,10 @@
 import requests
 from pprint import pprint
+#curl --get --include 'https://omgvamp-hearthstone-v1.p.mashape.com/cards' \
+#  -H 'X-Mashape-Key: Z6pDo19Qp5mshhwlmdkNbqGL3Rh4p1007mrjsnEiPAlaAg6Sf8'
+def importCards():
+    url = 'https://omgvamp-hearthstone-v1.p.mashape.com/cards'
+    headers = {'X-Mashape-Key' : 'Z6pDo19Qp5mshhwlmdkNbqGL3Rh4p1007mrjsnEiPAlaAg6Sf8'}
+    response = requests.get(url, headers=headers)
 
-class CardsManager:
-
-    def __init__(self):
-        self.importCards()
-
-    def importCards(self):
-        response = requests.get('https://api.hearthstonejson.com/v1/25770/frFR/cards.json')
-
-        pprint(response)
+    return response

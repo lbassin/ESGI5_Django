@@ -1,0 +1,21 @@
+from Django.db import models
+
+#class Card(models.model):
+#    artist = models.charField(max_length=255)
+#    attack = models.charField(max_length=255)
+#    cardClass = models.charField(max_length=255)
+#    collectible = models.charField(max_length=255)
+#    cost = models.charField(max_length=255)
+#    dbfId = models.charField(max_length=255)
+#    faction = models.charField(max_length=255)
+#    flavor = models.charField(max_length=255)
+#    health = models.charField(max_length=255)
+#    id = models.charField(max_length=255)
+#    mechanics = models.charField(max_length=255)
+#    name = models.charField(max_length=255)
+#    playRequirements = models.charField(max_length=255)
+#    rarity = models.charField(max_length=255)
+#    referencedTags = models.charField(max_length=255)
+#    set = models.charField(max_length=255)
+#    text = models.charField(max_length=255)
+#    type = models.charField(max_length=255)
