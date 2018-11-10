@@ -20,3 +20,9 @@ class Card(models.Model):
     img = models.CharField(max_length=255, null=True)
     imgGold = models.CharField(max_length=255, null=True)
     isDefault = models.BooleanField(default=False)
+
+
+class Deck(models.Model):
+    id = models.AutoField(primary_key=True)
+    name = models.CharField(max_length=255)
+    cards = models.ManyToManyField(Card)
