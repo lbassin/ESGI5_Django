@@ -8,7 +8,7 @@ from django.contrib import admin
 from django.http import HttpResponseRedirect
 from django.urls import path
 
-from cards.models import Card
+from cards.models import Card, Deck
 
 
 def import_cards():
@@ -82,3 +82,8 @@ class CardAdmin(admin.ModelAdmin):
                 card.save()
 
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@admin.register(Deck)
+class DeckAdmin(admin.ModelAdmin):
+    pass
