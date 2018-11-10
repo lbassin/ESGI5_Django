@@ -27,6 +27,7 @@ def register(request):
 
     return render(request, 'users/register.html', {'form': form})
 
+
 @login_required
 def cards(request):
     card_list = request.user.profile.cards.all()
@@ -36,3 +37,13 @@ def cards(request):
     cards = paginator.get_page(page)
 
     return render(request, 'users/cards.html', {'cards': cards})
+
+
+@login_required
+def decks(request):
+    return render(request, 'users/decks.html')
+
+
+@login_required
+def decks_new(request):
+    return render(request, 'users/decks_new.html')
