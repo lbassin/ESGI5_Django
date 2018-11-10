@@ -1,6 +1,6 @@
 import requests, json
 from pprint import pprint
-from hearthstone.cards.models import Card
+from cards.models import Card
 
 def importCards():
     url = 'https://omgvamp-hearthstone-v1.p.mashape.com/cards?locale=frFR'
