@@ -1,5 +1,6 @@
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from users.decorators import login_refused
@@ -25,3 +26,13 @@ def register(request):
             return redirect('dashboard')
 
     return render(request, 'users/register.html', {'form': form})
+
+@login_required
+def cards(request):
+    card_list = request.user.profile.cards.all()
+    paginator = Paginator(card_list, 8)
+
+    page = request.GET.get('page')
+    cards = paginator.get_page(page)
+
+    return render(request, 'users/cards.html', {'cards': cards})
