@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
+from cards.forms import CreateDeckForm
 from users.decorators import login_refused
 from users.forms import UserCreationForm
 
@@ -46,4 +47,13 @@ def decks(request):
 
 @login_required
 def decks_new(request):
-    return render(request, 'users/decks_new.html')
+    form = CreateDeckForm(request.POST if request.method == 'POST' else None)
+    for key in form.fields.keys():
+        form.fields[key].widget.attrs.update({'class': 'form-control'})
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.user = request.user
+            deck = form.save()
+
+    return render(request, 'users/decks_new.html', {'form': form})

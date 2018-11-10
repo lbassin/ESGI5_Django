@@ -56,6 +56,7 @@ def import_cards():
                 card.imgGold = elem['imgGold'] if elem['imgGold'] != "" else ""
 
             card.save()
+        return  # TO REMOVE : DEBUG
 
 
 @admin.register(Card)
