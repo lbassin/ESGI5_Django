@@ -1,0 +1,40 @@
+{% extends 'users.html' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Mes cartes</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for card in cards %}
+            <div class="col-3">
+                <img src="{{ card.img }}" alt="{{ card.name }}" class="img-fluid">
+            </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item {% if not cards.has_previous %}disabled{% endif %}">
+                        <a class="page-link"
+                           href="{% if cards.has_previous %}?page={{ cards.previous_page_number }}{% endif %}"
+                           tabindex="-1">Previous</a>
+                    </li>
+
+                    {% for page in cards.paginator.page_range %}
+                        <li class="page-item"><a class="page-link" href="?page={{ page }}">{{ page }}</a></li>
+                    {% endfor %}
+
+                    <li class="page-item {% if not cards.has_next %}disabled{% endif %}">
+                        <a class="page-link"
+                           href="{% if cards.has_next %}?page={{ cards.next_page_number }}{% endif %}">Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+{% endblock %}

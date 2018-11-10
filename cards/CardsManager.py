@@ -1,15 +1,20 @@
 import requests, json
 from pprint import pprint
+
 from cards.models import Card
+
 
 def importCards():
     url = 'https://omgvamp-hearthstone-v1.p.mashape.com/cards?locale=frFR'
-    headers = {'X-Mashape-Key' : 'Z6pDo19Qp5mshhwlmdkNbqGL3Rh4p1007mrjsnEiPAlaAg6Sf8'}
+    headers = {'X-Mashape-Key': 'Z6pDo19Qp5mshhwlmdkNbqGL3Rh4p1007mrjsnEiPAlaAg6Sf8'}
     response = requests.get(url, headers=headers)
     responseJson = response.json()
     for types in responseJson:
         pprint(types)
         for elem in responseJson[types]:
+            if bool(elem.get('img')) is False:
+                continue
+
             card = Card.objects.create()
             if bool(elem.get('name')) is not False:
                 card.name = elem['name'] if elem['name'] != "" else ""
