@@ -1,0 +1,12 @@
+{% extends 'users.html' %}
+
+{% block title %} Dashboard {% endblock %}
+
+{% block content %}
+<h1>Dashboard</h1>
+<p>
+    Hi {{ user.username }} !
+</p>
+
+<a href="{% url 'logout' %}">logout</a>
+{% endblock %}
