@@ -35,6 +35,11 @@
                             {{ form.password.errors }}
                         </div>
                     </div>
+                    <div>
+                        <p>
+                            <a href="{% url 'password_reset' %}">Mot de passe oublié ?</a>
+                        </p>
+                    </div>
                     {% csrf_token %}
                     <button type="submit" class="btn btn-primary">Login</button>
                 </form>
