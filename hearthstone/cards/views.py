@@ -1,13 +1,14 @@
 from django.http import HttpResponse
+from hearthstone.cards.models import Card
 from . import CardsManager as manager
-from pprint import pprint
 
 def index(request):
-    data = manager.importCards().json()
+    if(len(Card.objects.all()) <=0):
+        data = manager.importCards().json()
+        response = HttpResponse(data)
+    else:
+        data = Card.objects.all()
+        response = HttpResponse(data)
 
-    for key, elem in enumerate(data):
-        pprint(key)
-        pprint(elem)
-    response = HttpResponse(data)
     response['Content-Type'] = 'application/json'
     return response
