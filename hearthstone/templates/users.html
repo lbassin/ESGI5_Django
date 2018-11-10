@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %} Change Password {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-3">
+        <div class="card text-center">
+            <img class="card-img-top" src="http://lorempixel.com/200/200/animals" alt="Card image cap">
+            <div class="card-body">
+                <h5 class="card-title">{{ request.user.username }}</h5>
+                <div class="card-text">
+                    <p>Cards : 54</p>
+                    <p>Victory : 12</p>
+                    <p>Credits : 2100</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-9">
+        {% block content %}{% endblock %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+
+{% block title %} Register {% endblock %}
+
+{% block body %}
+<div class="row">
+    <div class="col-sm-6 offset-sm-3 ">
+        <div class="card text-center">
+            <div class="card-body">
+                <h1>Register</h1>
+                <form method="post">
+                    {% csrf_token %}
+                    {% for field in form %}
+                    <div class="form-group">
+                        {{ field.label_tag }}
+                        {{ field }}
+                        {% for error in field.errors %}
+                        <p style="color: red">{{ error }}</p>
+                        {% endfor %}
+                    </div>
+                    {% endfor %}
+                    <button type="submit">Sign up</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

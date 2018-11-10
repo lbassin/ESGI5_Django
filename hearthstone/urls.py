@@ -18,6 +18,5 @@ from django.contrib import admin
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^cards/', include('hearthstone.cards.urls')),
     url(r'^users/', include('users.urls')),
 ]
