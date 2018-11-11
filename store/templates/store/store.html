@@ -1,0 +1,41 @@
+{% extends 'users.html' %}
+
+{% block title %} Store {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Store</h1>
+        </div>
+    </div>
+    <div class="row">
+        {% for package in packages %}
+            <div class="col-4">
+                <div class="card text-center">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">{{ package.name }}</h5>
+                        <div class="card-text">
+                            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem deserunt dolore
+                                exercitationem id itaque laborum minima molestias nemo, nisi praesentium quae quas quasi
+                                reprehenderit similique tenetur totam unde vel voluptatem!
+                            </p>
+                            <div class="row">
+                                <div class="col-6">
+                                    <p>Crédits :<br>{{ package.price }}</p>
+                                </div>
+                                <div class="col-6">
+                                    <p>Cartes :<br>{{ package.cards_count }}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-12">
+                                    <a href="" class="btn btn-primary" style="width:100%">Devenir pauvre</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
