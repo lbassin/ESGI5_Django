@@ -27,7 +27,7 @@
                         <th scope="row">{{ deck.id }}</th>
                         <td>{{ deck.name }}</td>
                         <td>{{ deck.count_str }}</td>
-                        <td><a href="" class="btn btn-warning">Edit</a></td>
+                        <td><a href="{% url 'decks_edit' id=deck.id %}" class="btn btn-warning">Edit</a></td>
                     </tr>
                 {% endfor %}
                 {% if decks|length <= 0 %}
