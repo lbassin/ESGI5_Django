@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 
+from hearthstone.settings import CARDS_BY_DECK
+
 
 class Card(models.Model):
     id = models.AutoField(primary_key=True)
@@ -34,3 +36,6 @@ class Deck(models.Model):
 
     def __str__(self):
         return self.name
+
+    def count_str(self):
+        return self.cards.count().__str__() + ' / ' + CARDS_BY_DECK.__str__()

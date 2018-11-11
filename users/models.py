@@ -6,7 +6,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 from cards.models import Card, Deck
-from users.settings import STARTUP_CREDITS
+from hearthstone.settings import STARTUP_CREDITS
 
 
 class ProfileManager(models.Manager):

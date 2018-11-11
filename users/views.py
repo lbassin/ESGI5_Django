@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
@@ -44,6 +46,7 @@ def cards(request):
 @login_required
 def decks(request):
     deck_list = Profile.object.get_decks(request.user)
+
     return render(request, 'users/decks.html', {'decks': deck_list})
 
 
@@ -57,5 +60,7 @@ def decks_new(request):
         if form.is_valid():
             form.user = request.user
             form.save()
+
+            return redirect('users_decks')
 
     return render(request, 'users/decks_new.html', {'form': form})

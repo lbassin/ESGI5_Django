@@ -18,19 +18,21 @@
                     <th scope="col">#</th>
                     <th scope="col">Name</th>
                     <th scope="col">Cards</th>
+                    <th scope="col">Action</th>
                 </tr>
                 </thead>
                 <tbody>
                 {% for deck in decks %}
                     <tr>
-                        <th scope="row">1</th>
+                        <th scope="row">{{ deck.id }}</th>
                         <td>{{ deck.name }}</td>
                         <td>{{ deck.count_str }}</td>
+                        <td><a href="" class="btn btn-warning">Edit</a></td>
                     </tr>
                 {% endfor %}
                 {% if decks|length <= 0 %}
                     <tr>
-                        <td colspan="3" class="text-center">No data</td>
+                        <td colspan="4" class="text-center">No data</td>
                     </tr>
                 {% endif %}
                 </tbody>
