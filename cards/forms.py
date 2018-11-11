@@ -16,7 +16,8 @@ class CreateDeckForm(ModelForm):
 
     def save(self, commit=True):
         deck = super().save(commit=False)
-        deck.name = self.cleaned_data["name"]
+        deck.name = self.cleaned_data['name']
+        deck.user = self.user
 
         if commit:
             deck.save()

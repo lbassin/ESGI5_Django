@@ -5,7 +5,7 @@ from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from cards.models import Card
+from cards.models import Card, Deck
 from users.settings import STARTUP_CREDITS
 
 
@@ -17,6 +17,11 @@ class ProfileManager(models.Manager):
         profile.cards.set(default_cards)
 
         return profile
+
+    def get_decks(self, user):
+        decks = Deck.objects.filter(user_id=user.id)
+
+        return decks
 
 
 class Profile(models.Model):
