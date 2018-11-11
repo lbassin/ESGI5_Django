@@ -14,7 +14,7 @@
     "fields": {
       "name": "Advanced",
       "price": 50,
-      "cards_count": 2
+      "cards_count": 5
     }
   },
   {
@@ -24,6 +24,15 @@
       "name": "Caribou",
       "price": 170,
       "cards_count": 18
+    }
+  },
+  {
+    "model": "store.package",
+    "pk": 4,
+    "fields": {
+      "name": "Bon prix",
+      "price": 10200,
+      "cards_count": 2
     }
   }
 ]

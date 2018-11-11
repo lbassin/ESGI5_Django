@@ -11,13 +11,12 @@
     <div class="row">
         {% for package in packages %}
             <div class="col-4">
-                <div class="card text-center">
+                <div class="card mb-3 text-center">
                     <div class="card-body">
                         <h5 class="card-title text-center">{{ package.name }}</h5>
                         <div class="card-text">
                             <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Autem deserunt dolore
-                                exercitationem id itaque laborum minima molestias nemo, nisi praesentium quae quas quasi
-                                reprehenderit similique tenetur totam unde vel voluptatem!
+                                exercitationem id itaque laborum minima molestias nemo, nisi praesentium quae!
                             </p>
                             <div class="row">
                                 <div class="col-6">
@@ -29,7 +28,11 @@
                             </div>
                             <div class="row">
                                 <div class="col-12">
-                                    <a href="" class="btn btn-primary" style="width:100%">Devenir pauvre</a>
+                                    <a href="http://Google.Fr"
+                                       class="btn btn-primary {% if user_credits < package.price %}disabled{% endif %}"
+                                       style="width:100%">
+                                        Devenir pauvre
+                                    </a>
                                 </div>
                             </div>
                         </div>
