@@ -10,11 +10,17 @@
                 Hi {{ user.username }} !
             </p>
 
-            <a href="{% url "users_cards" %}">Voir mes cartes</a>
+
+            <p>
+                <a href="{% url "users_cards" %}">Voir mes cartes</a>
+            </p>
+            <p>
+                <a href="{% url "users_decks" %}">Gerer mes decks</a>
+            </p>
         </div>
     </div>
     <div class="row mt-3">
-        <div class="col-12">
+        <div class="col-12 text-right">
             <a href="{% url "logout" %}" class="btn btn-danger">Logout</a>
         </div>
     </div>

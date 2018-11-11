@@ -3,22 +3,24 @@
 {% block title %} Change Password {% endblock %}
 
 {% block body %}
-<div class="row">
-    <div class="col-3">
-        <div class="card text-center">
-            <img class="card-img-top" src="https://cdn-images-1.medium.com/max/1200/1*eFjpoz8lhNKyd8XcSWv2OA.jpeg" alt="Card image cap">
-            <div class="card-body">
-                <h5 class="card-title">{{ request.user.username }}</h5>
-                <div class="card-text">
-                    <p>Cards : x</p>
-                    <p>Victory : x</p>
-                    <p>Credits : {{ request.user.profile.credits }}</p>
+    <div class="row">
+        <div class="col-3">
+            <div class="card text-center">
+                <img class="card-img-top" src="https://cdn-images-1.medium.com/max/1200/1*eFjpoz8lhNKyd8XcSWv2OA.jpeg"
+                     alt="Card image cap">
+                <div class="card-body">
+                    <h5 class="card-title">{{ request.user.username }}</h5>
+                    <div class="card-text">
+                        <p>Cards : {{ request.user.profile.cards.count }}</p>
+                        <p>Victory : TODO</p>
+                        <p>Credits : {{ request.user.profile.credits }}</p>
+                    </div>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Dashboard</a>
                 </div>
             </div>
         </div>
+        <div class="col-9">
+            {% block content %}{% endblock %}
+        </div>
     </div>
-    <div class="col-9">
-        {% block content %}{% endblock %}
-    </div>
-</div>
 {% endblock %}

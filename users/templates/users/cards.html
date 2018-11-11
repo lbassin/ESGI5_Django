@@ -11,7 +11,9 @@
     <div class="row">
         {% for card in cards %}
             <div class="col-3">
-                <img src="{{ card.img }}" alt="{{ card.name }}" class="img-fluid">
+                <img src="{{ card.img }}" alt="{{ card.name }}"
+                     onerror="this.onerror=null;this.src='https://dummyimage.com/307x415/e0e0e0/000&text={{ card.name }}'"
+                     class="img-fluid">
             </div>
         {% endfor %}
     </div>

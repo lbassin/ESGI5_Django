@@ -1,0 +1,42 @@
+{% extends 'users.html' %}
+
+{% block title %} Decks {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Mes decks</h1>
+            <a href="{% url 'users_decks_new' %}" class="btn btn-success float-right">Add deck</a>
+        </div>
+    </div>
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">Name</th>
+                    <th scope="col">Cards</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for deck in decks %}
+                    <tr>
+                        <th scope="row">{{ deck.id }}</th>
+                        <td>{{ deck.name }}</td>
+                        <td>{{ deck.count_str }}</td>
+                        <td><a href="" class="btn btn-warning">Edit</a></td>
+                    </tr>
+                {% endfor %}
+                {% if decks|length <= 0 %}
+                    <tr>
+                        <td colspan="4" class="text-center">No data</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

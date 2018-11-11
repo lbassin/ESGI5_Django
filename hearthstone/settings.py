@@ -126,3 +126,6 @@ LOGIN_REDIRECT_URL = '/users/dashboard'
 LOGOUT_REDIRECT_URL = '/users/login'
 
 EMAIL_HOST = 'mailcatcher'
+
+STARTUP_CREDITS = 200
+CARDS_BY_DECK = 30
