@@ -25,7 +25,7 @@ class ProfileManager(models.Manager):
 
 
 class Profile(models.Model):
-    object = ProfileManager()
+    objects = ProfileManager()
 
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credits = models.IntegerField(default=STARTUP_CREDITS)
@@ -35,7 +35,7 @@ class Profile(models.Model):
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-        Profile.object.create_profile(user=instance)
+        Profile.objects.create_profile(user=instance)
 
 
 @receiver(post_save, sender=User)

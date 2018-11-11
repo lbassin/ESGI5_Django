@@ -1,0 +1,33 @@
+{% extends 'users.html' %}
+
+{% block title %} Store {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Store</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% if success %}
+                <p>
+                    Yes. Tu as {{ package.cards_count }} cartes en plus maintenant, bravo.
+                </p>
+            {% else %}
+                <p>
+                    Retourne manger de la terre, t'es trop pauvre.
+                </p>
+            {% endif %}
+        </div>
+    </div>
+    {% if success %}
+        <div class="row">
+            {% for card in cards %}
+                <div class="col-3">
+                    {% include 'cards/single_card.html' with card=card %}
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+{% endblock %}

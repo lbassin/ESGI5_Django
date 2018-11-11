@@ -1,0 +1,38 @@
+[
+  {
+    "model": "store.package",
+    "pk": 1,
+    "fields": {
+      "name": "Basic",
+      "price": 100,
+      "cards_count": 8
+    }
+  },
+  {
+    "model": "store.package",
+    "pk": 2,
+    "fields": {
+      "name": "Advanced",
+      "price": 50,
+      "cards_count": 5
+    }
+  },
+  {
+    "model": "store.package",
+    "pk": 3,
+    "fields": {
+      "name": "Caribou",
+      "price": 170,
+      "cards_count": 18
+    }
+  },
+  {
+    "model": "store.package",
+    "pk": 4,
+    "fields": {
+      "name": "Bon prix",
+      "price": 10200,
+      "cards_count": 2
+    }
+  }
+]

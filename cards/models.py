@@ -1,10 +1,25 @@
+import random
+
 from django.contrib.auth.models import User
 from django.db import models
 
 from hearthstone.settings import CARDS_BY_DECK
 
 
+class CardManager(models.Manager):
+    def get_random(self, count):
+        cards = Card.objects.all()
+
+        new_card = []
+        for index in range(0, count):
+            new_card.append(random.choice(cards))
+
+        return new_card
+
+
 class Card(models.Model):
+    objects = CardManager()
+
     id = models.AutoField(primary_key=True)
     cardId = models.CharField(max_length=255, null=True)
     dbfId = models.CharField(max_length=255, null=True)

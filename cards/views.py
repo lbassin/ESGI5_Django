@@ -20,7 +20,7 @@ def cards(request):
 
 @login_required
 def decks(request):
-    deck_list = Profile.object.get_decks(request.user)
+    deck_list = Profile.objects.get_decks(request.user)
 
     return render(request, 'cards/decks.html', {'decks': deck_list})
 
