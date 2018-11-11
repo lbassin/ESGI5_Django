@@ -8,7 +8,7 @@ from cards.models import Deck, Card
 class CreateDeckForm(ModelForm):
     name = forms.CharField(max_length=255)
     user = forms.ModelChoiceField(User.objects, widget=forms.HiddenInput(), required=False)
-    cards = forms.ModelMultipleChoiceField(Card.objects)
+    cards = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
 
     class Meta:
         model = Deck
