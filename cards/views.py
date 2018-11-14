@@ -22,7 +22,7 @@ def cards(request):
 def decks(request):
     deck_list = Profile.objects.get_decks(request.user)
 
-    return render(request, 'cards/decks.html', {'decks': deck_list})
+    return render(request, 'cards/decks_list.html', {'decks': deck_list})
 
 
 @login_required
@@ -57,3 +57,10 @@ def deck_edit(request, id):
         form.fields[key].widget.attrs.update({'class': 'form-control'})
 
     return render(request, 'cards/decks_edit.html', {'form': form})
+
+
+@login_required
+def deck_view(request, id):
+    deck = Deck.objects.get(id=id)
+
+    return render(request, 'cards/decks_view.html', {'deck': deck})
