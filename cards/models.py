@@ -54,3 +54,6 @@ class Deck(models.Model):
 
     def count_str(self):
         return self.cards.count().__str__() + ' / ' + CARDS_BY_DECK.__str__()
+
+    def valid(self):
+        return self.cards.count() == CARDS_BY_DECK
