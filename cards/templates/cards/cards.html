@@ -8,10 +8,11 @@
             <h1>Mes cartes</h1>
         </div>
     </div>
-    <div class="row">
+    <div class="row mb-3">
         {% for card in cards %}
-            <div class="col-3">
+            <div class="col-3 text-center">
                 {% include 'cards/single_card.html' with card=card %}
+                <a class="btn btn-default" href="{% url 'cards_view' id=card.id %}">Détails</a>
             </div>
         {% endfor %}
     </div>

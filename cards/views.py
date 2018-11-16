@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, redirect
 
 from cards.forms import CreateDeckForm
-from cards.models import Deck
+from cards.models import Deck, Card
 from users.models import Profile
 
 
@@ -64,3 +64,10 @@ def deck_view(request, id):
     deck = Deck.objects.get(id=id)
 
     return render(request, 'cards/decks_view.html', {'deck': deck})
+
+
+@login_required
+def cards_view(request, id):
+    card = Card.objects.get(id=id)
+
+    return render(request, 'cards/cards_view.html', {'card': card})
