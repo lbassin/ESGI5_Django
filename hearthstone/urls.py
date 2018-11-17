@@ -22,6 +22,5 @@ urlpatterns = [
     url(r'^users/', include('users.urls')),
     url(r'^cards/', include('cards.urls')),
     url(r'^store/', include('store.urls')),
-    url(r'^$', RedirectView.as_view(url='/users/login', permanent=False))
-
+    url(r'^$', RedirectView.as_view(url='/users/dashboard', permanent=False))
 ]
