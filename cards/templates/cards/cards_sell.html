@@ -1,0 +1,24 @@
+{% extends 'users.html' %}
+
+{% block title %} Card Sell {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Card sell</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            {% if success %}
+                <p>
+                    Tu as bien vendu la carte
+                </p>
+            {% else %}
+                <p>
+                    Impossible de vendre la carte
+                </p>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

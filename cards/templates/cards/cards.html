@@ -12,7 +12,22 @@
         {% for card in cards %}
             <div class="col-3 text-center">
                 {% include 'cards/single_card.html' with card=card %}
-                <a class="btn btn-default" href="{% url 'cards_view' id=card.id %}">Détails</a>
+                <div class="row">
+                    <div class="col-12">
+                        <a class="btn btn-default" href="{% url 'cards_view' id=card.id %}">Details</a>
+                    </div>
+                    <div class="col-12">
+                        <form action="{% url 'cards_sell' %}" method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="id" value="{{ card.id }}">
+                            <button type="submit"
+                                    class="btn btn-danger"
+                                    style="width:100%">
+                                Sell 1 credit
+                            </button>
+                        </form>
+                    </div>
+                </div>
             </div>
         {% endfor %}
     </div>
