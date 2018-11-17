@@ -76,6 +76,7 @@ def cards_view(request, id):
     return render(request, 'cards/cards_view.html', {'card': card})
 
 
+@login_required
 def cards_sell(request):
     try:
         profile = request.user.profile

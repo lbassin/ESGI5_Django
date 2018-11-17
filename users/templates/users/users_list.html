@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block title %} Users {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h1>Users</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Cards</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.username }}</td>
+                        <td>{{ user.profile.cards.count }}</td>
+                        <td>
+                            <a href="{% url 'users_cards' id=user.id %}" class="btn btn-primary">View cards</a>
+                            <a href="" class="btn btn-warning">Follow</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if users|length <= 0 %}
+                    <tr>
+                        <td colspan="3" class="text-center">No data</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+{% endblock %}
