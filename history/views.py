@@ -14,6 +14,4 @@ def home(request):
     for user in following:
         history += History.objects.all().filter(user_id=user.id)
 
-    pprint(history)
-
     return render(request, 'history/home.html', {'history': history})
