@@ -13,9 +13,14 @@
             <div class="col-12">
                 <div class="card mb-3">
                     <div class="card-body">
-                        <p>
-                            {{ event.user.username }}
-                        </p>
+                        <div style="display: flex; justify-content: space-between">
+                            <p>
+                                {{ event.user.username }}
+                            </p>
+                            <p>
+                                {{ event.created_at |date:"d/m/Y - H:i" }}
+                            </p>
+                        </div>
                         <hr>
                         <p>
                             {{ event.text }}
@@ -25,4 +30,11 @@
             </div>
         </div>
     {% endfor %}
+    {% if history|length <= 0 %}
+        <div class="row">
+            <div class="col-12">
+                <p>No data</p>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}

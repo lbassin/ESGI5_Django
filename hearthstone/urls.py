@@ -21,5 +21,5 @@ urlpatterns = [
     url('', include('cards.urls')),
     url('', include('users.urls')),
     url(r'^store/', include('store.urls')),
-    url('', include('history.urls')),
+    url(r'^', include('history.urls')),
 ]
