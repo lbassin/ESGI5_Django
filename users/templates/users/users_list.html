@@ -26,7 +26,19 @@
                         <td>{{ user.profile.cards.count }}</td>
                         <td>
                             <a href="{% url 'users_cards' id=user.id %}" class="btn btn-primary">View cards</a>
-                            <a href="" class="btn btn-warning">Follow</a>
+                            {% if not user in following %}
+                                <form action="{% url 'users_follow' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ user.id }}">
+                                    <button type="submit" class="btn btn-warning">Follow</button>
+                                </form>
+                            {% else %}
+                                <form action="{% url 'users_unfollow' %}" method="post">
+                                    {% csrf_token %}
+                                    <input type="hidden" name="id" value="{{ user.id }}">
+                                    <button type="submit" class="btn btn-warning">Unfollow</button>
+                                </form>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

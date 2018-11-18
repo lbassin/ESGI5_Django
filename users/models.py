@@ -30,6 +30,7 @@ class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     credits = models.IntegerField(default=STARTUP_CREDITS)
     cards = models.ManyToManyField(Card)
+    following = models.ManyToManyField(User, name='following', related_name='followers')
 
 
 @receiver(post_save, sender=User)

@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -33,10 +35,14 @@ def register(request):
 @login_required
 def users(request):
     users = User.objects.all()
+    following = request.user.profile.following.all()
 
-    return render(request, 'users/users_list.html', {'users': users})
+    pprint(following)
+
+    return render(request, 'users/users_list.html', {'users': users, 'following': following})
 
 
+@login_required
 def cards(request, id):
     try:
         user = User.objects.get(id=id)
@@ -44,3 +50,33 @@ def cards(request, id):
         raise Http404
 
     return render(request, 'users/users_cards.html', {'cards': user.profile.cards.all(), 'user': user})
+
+
+@login_required
+def follow(request):
+    try:
+        target_user = User.objects.get(id=request.POST.get('id'))
+    except ObjectDoesNotExist:
+        raise Http404
+
+    profile = request.user.profile
+    profile.following.add(target_user)
+
+    profile.save()
+
+    return redirect('users_list')
+
+
+@login_required
+def unfollow(request):
+    try:
+        target_user = User.objects.get(id=request.POST.get('id'))
+    except ObjectDoesNotExist:
+        raise Http404
+
+    profile = request.user.profile
+    profile.following.remove(target_user)
+
+    profile.save()
+
+    return redirect('users_list')
