@@ -1,5 +1,3 @@
-from pprint import pprint
-
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
@@ -36,8 +34,6 @@ def register(request):
 def users(request):
     users = User.objects.all()
     following = request.user.profile.following.all()
-
-    pprint(following)
 
     return render(request, 'users/users_list.html', {'users': users, 'following': following})
 
@@ -80,8 +76,3 @@ def unfollow(request):
     profile.save()
 
     return redirect('users_list')
-
-
-@login_required
-def home(request):
-    return render(request, 'users/home.html')

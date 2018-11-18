@@ -1,0 +1,28 @@
+{% extends 'users.html' %}
+
+{% block title %} Home {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            <h1>News feed</h1>
+        </div>
+    </div>
+    {% for event in history %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <p>
+                            {{ event.user.username }}
+                        </p>
+                        <hr>
+                        <p>
+                            {{ event.text }}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}
