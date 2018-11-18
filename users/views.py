@@ -80,3 +80,8 @@ def unfollow(request):
     profile.save()
 
     return redirect('users_list')
+
+
+@login_required
+def home(request):
+    return render(request, 'users/home.html')

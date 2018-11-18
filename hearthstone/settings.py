@@ -122,8 +122,8 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-LOGIN_URL = '/users/login'
-LOGIN_REDIRECT_URL = '/users/dashboard'
+LOGIN_URL = '/users/login/'
+LOGIN_REDIRECT_URL = '/dashboard'
 LOGOUT_REDIRECT_URL = '/users/login'
 
 EMAIL_HOST = 'mailcatcher'
