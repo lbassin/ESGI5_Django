@@ -7,6 +7,7 @@ from django.shortcuts import render, redirect
 
 from cards.forms import CreateDeckForm
 from cards.models import Deck, Card
+from history.models import History
 from users.models import Profile
 
 
@@ -84,6 +85,11 @@ def cards_sell(request):
 
         profile.cards.remove(card)
         profile.credits += 1
+
+        history = History(user=request.user,
+                          text="Sold the card '" + card.name + "'",
+                          type='sell')
+        history.save()
 
         profile.save()
     except ObjectDoesNotExist:

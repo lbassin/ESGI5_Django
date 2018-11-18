@@ -2,8 +2,11 @@ import random
 
 from django.contrib.auth.models import User
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
 
 from hearthstone.settings import CARDS_BY_DECK
+from history.models import History
 
 
 class CardManager(models.Manager):
@@ -57,3 +60,10 @@ class Deck(models.Model):
 
     def valid(self):
         return self.cards.count() == CARDS_BY_DECK
+
+
+@receiver(post_save, sender=Deck)
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+        history = History(user_id=instance.user.id, text="Created a new deck", type="deck")
+        history.save()
