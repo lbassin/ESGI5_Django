@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'cards',
     'users',
     'store',
-    'history'
+    'history',
+    'trade'
 ]
 
 MIDDLEWARE = [

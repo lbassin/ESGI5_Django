@@ -4,15 +4,19 @@
 
 {% block body %}
     <div class="row">
-        <div class="col-12">
+        <div class="col-8">
             <h1>{{ user.username }}</h1>
+        </div>
+        <div class="col-4 text-right">
+            <a class="btn btn-lg btn-primary" href="{% url 'trade_trade' id=user.id %}">Trade</a>
         </div>
     </div>
 
+
     <div class="row">
         {% for card in cards %}
-            <div class="col-3"  >
-            {% include 'cards/single_card.html' with card=card %}
+            <div class="col-3">
+                {% include 'cards/single_card.html' with card=card %}
             </div>
         {% endfor %}
     </div>
