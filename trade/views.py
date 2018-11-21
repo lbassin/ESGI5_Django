@@ -8,7 +8,9 @@ def trade(request, id):
     user_target = User.objects.get(id=id)
     user_source = request.user
 
-    form = CreateTradeForm(request.POST if request.method == 'POST' else None)
+    form = CreateTradeForm(request.POST if request.method == 'POST' else None,
+                           user_source=user_source,
+                           user_target=user_target)
     for key in form.fields.keys():
         form.fields[key].widget.attrs.update({'class': 'form-control'})
 

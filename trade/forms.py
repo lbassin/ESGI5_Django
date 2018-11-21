@@ -7,6 +7,11 @@ from trade.models import Trade
 
 
 class CreateTradeForm(ModelForm):
+    cards_source = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
+    cards_target = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
+    credits_source = forms.IntegerField()
+    credits_target = forms.IntegerField()
+
     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None, initial=None, error_class=ErrorList,
                  label_suffix=None, empty_permitted=False, instance=None, use_required_attribute=None, renderer=None,
                  user_source=None, user_target=None):
@@ -15,10 +20,8 @@ class CreateTradeForm(ModelForm):
         self.user_source = user_source
         self.user_target = user_target
 
-    cards_source = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
-    cards_target = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
-    credits_source = forms.IntegerField()
-    credits_target = forms.IntegerField()
+        self.fields['cards_source'].queryset = user_source.profile.cards.all()
+        self.fields['cards_target'].queryset = user_target.profile.cards.all()
 
     class Meta:
         model = Trade
