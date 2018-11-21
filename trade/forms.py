@@ -9,8 +9,8 @@ from trade.models import Trade
 class CreateTradeForm(ModelForm):
     cards_source = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
     cards_target = forms.ModelMultipleChoiceField(Card.objects, widget=forms.SelectMultiple(attrs={'size': 20}))
-    credits_source = forms.IntegerField()
-    credits_target = forms.IntegerField()
+    credits_source = forms.IntegerField(initial=0)
+    credits_target = forms.IntegerField(initial=0)
 
     def __init__(self, data=None, files=None, auto_id='id_%s', prefix=None, initial=None, error_class=ErrorList,
                  label_suffix=None, empty_permitted=False, instance=None, use_required_attribute=None, renderer=None,
