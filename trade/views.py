@@ -53,6 +53,18 @@ def accept(request, id):
     source = trade.user_source
     target = trade.user_target
 
+    for card in trade.cards_source.all():
+        if card not in source.profile.cards.all():
+            return render(request, 'trade/accept_error.html', {"error": "Source doesn't have a card"})
+        source.profile.cards.remove(card)
+        target.profile.cards.add(card)
+
+    for card in trade.cards_target.all():
+        if card not in target.profile.cards.all():
+            return render(request, 'trade/accept_error.html', {"error": "Target doesn't have a card"})
+        target.profile.cards.remove(card)
+        source.profile.cards.add(card)
+
     if source.profile.credits < trade.credits_source or target.profile.credits < trade.credits_target:
         return render(request, 'trade/accept_error.html', {"error": "Not enough credits"})
 
@@ -63,6 +75,10 @@ def accept(request, id):
     target.profile.credits += trade.credits_source
 
     trade.accept()
+
+    target.profile.save()
+    source.profile.save()
+    trade.save()
 
     return render(request, 'trade/accept.html')
 

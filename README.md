@@ -9,7 +9,7 @@ python manage.py loaddata packages
 # TODO Minimal
 - [X] Acheter des paquets de cartes
 - [X] Constituer des decks, les enregistrer pour les réutiliser plus tard
-- [ ] Echanger des cartes avec un autre joueur (troc)
+- [X] Echanger des cartes avec un autre joueur (troc)
 - [X] Vendre des cartes
 - [ ] Jouer contre un autre joueur
 - [ ] Jouer contre un personnage non joueur, préconfiguré par l'administrateur
