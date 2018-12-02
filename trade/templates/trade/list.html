@@ -5,12 +5,43 @@
 {% block content %}
     <div class="row">
         <div class="col-12">
-            <h1>Mes echanges</h1>
+            <h1>Reçu</h1>
+        </div>
+        <div class="col-12 text-center">
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th scope="col">#</th>
+                    <th scope="col">From</th>
+                    <th scope="col">Date</th>
+                    <th scope="col">Action</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for trade in asking_trades %}
+                    <tr>
+                        <th scope="row">{{ trade.id }}</th>
+                        <td>{{ trade.user_target.username }}</td>
+                        <td>{{ trade.created_at|date:"d/m/Y - H:i" }}</td>
+                        <td>
+                            <a href="{% url 'trade_view' id=trade.id %}" class="btn btn-primary">View</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {% if asking_trades|length <= 0 %}
+                    <tr>
+                        <td colspan="4" class="text-center">No data</td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
         </div>
     </div>
-
     <div class="row">
         <div class="col-12">
+            <h1>Demandé</h1>
+        </div>
+        <div class="col-12 text-center">
             <table class="table table-striped">
                 <thead>
                 <tr>
@@ -21,18 +52,18 @@
                 </tr>
                 </thead>
                 <tbody>
-                {% for trade in trades %}
+                {% for trade in my_trades %}
                     <tr>
                         <th scope="row">{{ trade.id }}</th>
                         <td>{{ trade.user_target.username }}</td>
                         <td>{{ trade.created_at|date:"d/m/Y - H:i" }}</td>
                         <td>
-                            <a href="" class="btn btn-primary">View</a>
-                            <a href="" class="btn btn-warning">Edit</a>
+                            <a href="{% url 'trade_view' id=trade.id %}" class="btn btn-primary">View</a>
+                            <a href="" class="btn btn-danger">Annuler</a>
                         </td>
                     </tr>
                 {% endfor %}
-                {% if trades|length <= 0 %}
+                {% if my_trades|length <= 0 %}
                     <tr>
                         <td colspan="4" class="text-center">No data</td>
                     </tr>

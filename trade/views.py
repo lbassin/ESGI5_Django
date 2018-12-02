@@ -1,6 +1,8 @@
+from pprint import pprint
+
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from trade.forms import CreateTradeForm
 from trade.models import Trade
@@ -20,12 +22,21 @@ def trade(request, id):
     if request.method == 'POST':
         if form.is_valid():
             form.save()
+            return redirect('trade_index')
 
     return render(request, 'trade/new.html', {'user_target': user_target, 'user_source': user_source, 'form': form})
 
 
 @login_required
 def index(request):
-    trades = Trade.objects.filter(user_source_id=request.user.id).all()
+    asking_trades = Trade.objects.filter(user_target_id=request.user.id).all()
+    my_trades = Trade.objects.filter(user_source_id=request.user.id).all()
 
-    return render(request, 'trade/list.html', {'trades': trades})
+    return render(request, 'trade/list.html', {'my_trades': my_trades, "asking_trades": asking_trades})
+
+
+@login_required
+def view(request, id):
+    trade = Trade.objects.get(id=id)
+
+    return render(request, 'trade/view.html', {'trade': trade})

@@ -1,3 +1,5 @@
+from pprint import pprint
+
 from django import forms
 from django.forms import ModelForm
 from django.forms.utils import ErrorList
@@ -37,6 +39,10 @@ class CreateTradeForm(ModelForm):
         trade = super().save(commit=False)
         trade.user_source_id = self.user_source.id
         trade.user_target_id = self.user_target.id
+        trade.save()
+
+        trade.cards_source.set(self.cleaned_data['cards_source'])
+        trade.cards_target.set(self.cleaned_data['cards_target'])
         trade.save()
 
         return trade

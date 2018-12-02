@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block title %} Mes echanges {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>{{ trade.user_source.username }} offre à {{ trade.user_target.username }}</h2>
+        </div>
+    </div>
+
+    <div class="row text-center">
+        <div class="col-12">
+            <div class="row">
+                {% for card in trade.cards_source.all %}
+                    <div class="col-3">
+                        {% include 'cards/single_card.html' with card=card %}
+                    </div>
+                {% endfor %}
+                {% if trade.cards_source.all|length <= 0 %}
+                    <div class="col-12">
+                        <p>No cards</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-12">{{ trade.credits_source }} credits</div>
+    </div>
+
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>contre</h2>
+        </div>
+    </div>
+
+    <div class="row mb-5 text-center">
+        <div class="col-12">
+            <div class="row">
+                {% for card in trade.cards_target.all %}
+                    <div class="col-3">
+                        {% include 'cards/single_card.html' with card=card %}
+                    </div>
+                {% endfor %}
+                {% if trade.cards_target.all|length <= 0 %}
+                    <div class="col-12">
+                        <p>No cards</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+        <div class="col-12">{{ trade.credits_target }} credits</div>
+    </div>
+{% endblock %}
