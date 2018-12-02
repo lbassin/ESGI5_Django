@@ -11,3 +11,4 @@ class Trade(models.Model):
     cards_target = models.ManyToManyField(Card, related_name="cards_target")
     credits_source = models.IntegerField()
     credits_target = models.IntegerField()
+    created_at = models.DateTimeField(auto_now_add=True)

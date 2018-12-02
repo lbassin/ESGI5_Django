@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %} Trade {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>You're trading with {{ user_target.username }}</h1>
+        </div>
+    </div>
+
+
+    <div class="row mt-3">
+        <div class="col-12">
+            <form method="post">
+                {% csrf_token %}
+
+                <div class="row">
+                    <div class="col-12">
+                        {{ form.non_field_errors }}
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-6 text-center">
+                        <p>Yours</p>
+                    </div>
+                    <div class="col-6 text-center">
+                        <p>{{ user_target.username }}</p>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-6">
+                        {{ form.cards_source }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.cards_target }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-6">
+                        {{ form.credits_source.label_tag }}
+                        {{ form.credits_source }}
+                    </div>
+                    <div class="col-6">
+                        {{ form.credits_target.label_tag }}
+                        {{ form.credits_target }}
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}
