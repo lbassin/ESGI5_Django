@@ -1,0 +1,14 @@
+{% extends 'users.html' %}
+
+{% block title %} Trade - Decline {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12">
+            C'est pas ultra sympa mais ok, echange refusé.
+        </div>
+        <div class="col-12">
+            <a href="{% url 'trade_index' %}" class="btn btn-primary">Back to trades</a>
+        </div>
+    </div>
+{% endblock %}

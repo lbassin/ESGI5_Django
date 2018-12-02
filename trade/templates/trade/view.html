@@ -50,4 +50,19 @@
         </div>
         <div class="col-12">{{ trade.credits_target }} credits</div>
     </div>
+
+    {% if user_is_target and trade.status == 0 %}
+        <div class="row mb-4">
+            <div class="col-12 text-center">
+                <form method="POST" action="{% url 'trade_accept' id=trade.id %}" style="display: inline-block">
+                    {% csrf_token %}
+                    <button class="btn btn-lg btn-success">Accepter</button>
+                </form>
+                <form method="POST" action="{% url 'trade_decline' id=trade.id %}" style="display: inline-block">
+                    {% csrf_token %}
+                    <button class="btn btn-lg btn-danger">Refuser</button>
+                </form>
+            </div>
+        </div>
+    {% endif %}
 {% endblock %}
