@@ -14,7 +14,7 @@ python manage.py loaddata packages
 - [ ] Jouer contre un autre joueur
 - [ ] Jouer contre un personnage non joueur, préconfiguré par l'administrateur
 - [X] Suivre d'autres joueurs (vous aurez alors des informations sur leurs dernières actions dans votre flux d'actualité)
-- [ ] Discuter avec d'autres membres via des forums
+- [X] Discuter avec d'autres membres via des forums
 - [X] Voir sa collection, et celle des autres joueurs
 
 # TODO Bonus

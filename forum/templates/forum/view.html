@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %} Forum - {{ topic.label }} {% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h1>{{ topic.label }}</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            {% for message in messages %}
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="card-text">
+                            <div class="row">
+                                <div class="col-6">
+                                    {{ message.user.username }}
+                                </div>
+                                <div class="col-6 text-right">
+                                    {{ message.created_at|date:"d/m/Y - H:i" }}
+                                </div>
+                            </div>
+                            <hr>
+                            {{ message.content }}
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            {% if request.user.is_authenticated %}
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="row">
+                        <div class="col-12">
+                            <label for="{{ form.content.id_for_label }}">Message :</label>
+                            {{ form.content }}
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-12 text-right">
+                            <button class="btn btn-primary">Send</button>
+                        </div>
+                    </div>
+                </form>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

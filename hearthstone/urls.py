@@ -22,5 +22,6 @@ urlpatterns = [
     url(r'^users/', include('users.urls')),
     url(r'^store/', include('store.urls')),
     url(r'^trade/', include('trade.urls')),
+    url(r'^forum/', include('forum.urls')),
     url(r'^', include('history.urls')),
 ]
