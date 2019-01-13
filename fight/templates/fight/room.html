@@ -1,0 +1,88 @@
+{% extends 'base.html' %}
+
+{% block title %} Fight {% endblock %}
+
+{% block body %}
+    <!--suppress JSAnnotator -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Fight</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <textarea name="history"
+                      class="form-control"
+                      style="resize: none; height: 200px"
+                      title="history"
+                      readonly></textarea>
+        </div>
+    </div>
+
+    <script>
+        addHistory('Waiting another player...');
+
+        const data = {{ fight_json }};
+        let joinLocked = false;
+
+        const socket = new WebSocket('ws://' + window.location.host + '/ws/fight/' + data.room_id + '/');
+        let firstPlayer = {
+            id: {{ request.user.id }},
+            name: '{{ request.user.username }}',
+            deck: data.deck_id
+        };
+        let secondPlayer = null;
+
+        socket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+
+            if (data.action === 'join') {
+                joinAction(data);
+            }
+
+            if (data.action === 'start') {
+                startAction(data);
+            }
+        };
+
+        socket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        function addHistory(text) {
+            document.querySelector('textarea[name=history').value += text + '\n';
+        }
+
+        function joinAction(data) {
+            if (!joinLocked && data.player.id !== firstPlayer.id) {
+                if (data.player.deck) {
+                    secondPlayer = data.player;
+                    addHistory(`${secondPlayer.name} joined the room`);
+                    joinLocked = true;
+
+                    socket.send(JSON.stringify({
+                        action: 'ready',
+                        data: {
+                            first: firstPlayer,
+                            second: secondPlayer
+                        }
+                    }));
+                }
+
+                socket.send(JSON.stringify({
+                    action: 'join',
+                    data: {
+                        player: firstPlayer
+                    }
+                }));
+            }
+        }
+
+        function startAction(data) {
+            addHistory('Ready to start');
+
+            console.log(data);
+        }
+    </script>
+{% endblock %}

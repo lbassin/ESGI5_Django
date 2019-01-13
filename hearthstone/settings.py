@@ -40,7 +40,9 @@ INSTALLED_APPS = [
     'store',
     'history',
     'trade',
-    'forum'
+    'forum',
+    'fight',
+    'channels'
 ]
 
 MIDDLEWARE = [
@@ -133,3 +135,13 @@ EMAIL_HOST = 'mailcatcher'
 
 STARTUP_CREDITS = 200
 CARDS_BY_DECK = 5
+
+ASGI_APPLICATION = "hearthstone.routing.application"
+CHANNEL_LAYERS = {
+    'default': {
+        'BACKEND': 'channels_redis.core.RedisChannelLayer',
+        'CONFIG': {
+            "hosts": [('redis', 6379)],
+        },
+    },
+}

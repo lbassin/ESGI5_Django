@@ -1,0 +1,34 @@
+<div class="row">
+    <div class="col-12">
+        <h2>History</h2>
+    </div>
+</div>
+<div class="row">
+    <div class="col-12 text-center">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">From</th>
+                <th scope="col">Date</th>
+                <th scope="col">Status</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for fight in history %}
+                <tr>
+                    <th scope="row">{{ fight.id }}</th>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+            {% if history|length <= 0 %}
+                <tr>
+                    <td colspan="4" class="text-center">No data</td>
+                </tr>
+            {% endif %}
+            </tbody>
+        </table>
+    </div>
+</div>

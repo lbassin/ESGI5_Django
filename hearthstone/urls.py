@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'^store/', include('store.urls')),
     url(r'^trade/', include('trade.urls')),
     url(r'^forum/', include('forum.urls')),
+    url(r'^fight/', include('fight.urls')),
     url(r'^', include('history.urls')),
 ]

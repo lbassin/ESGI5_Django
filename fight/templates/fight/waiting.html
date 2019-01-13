@@ -1,0 +1,149 @@
+<div class="row">
+    <div class="col-6">
+        <h2>Waiting room</h2>
+    </div>
+    <div class="col-6 text-right">
+        <button class="btn btn-primary" data-toggle="modal" data-target="#decksModal">Create room</button>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12 text-center">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th scope="col">User</th>
+                <th scope="col">Victory</th>
+                <th scope="col">Defeat</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <td colspan="4" class="text-center" id="no-fight">Nobody is waiting right now</td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="modal fade" id="decksModal" tabindex="-1" role="dialog" aria-labelledby="decksModal" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Choose your deck</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% for deck in decks %}
+                    <div class="row mb-3">
+                        <div class="col-6 text-right">
+                            {{ deck.name }}
+                        </div>
+                        <div class="col-6 text-left">
+                            <button class="btn btn-primary" data-deck-id="{{ deck.id }}">Select</button>
+                        </div>
+                    </div>
+                {% endfor %}
+                {% if decks|length <= 0 %}
+                    <p>No deck</p>
+                {% endif %}
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const socket = new WebSocket('ws://' + window.location.host + '/ws/waiting/');
+    let chosen = undefined;
+
+    socket.onmessage = function (e) {
+        const data = JSON.parse(e.data);
+        if (data.action === 'add') {
+            addNewRow(data);
+        }
+
+        if (data.action === 'remove') {
+            removeRow(data);
+        }
+    };
+
+    const buttons = document.querySelectorAll('#decksModal .modal-body button');
+
+    for (let i = 0; i < buttons.length; i++) {
+        buttons[i].addEventListener('click', function () {
+            const data = {
+                id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+                user: '{{ request.user.username }}',
+                deck: this.dataset.deckId,
+                victory: '-1',
+                defeat: '-1'
+            };
+
+            if (chosen) {
+                data.id = chosen
+            }
+
+            socket.send(JSON.stringify(data));
+            document.location.href = window.location.protocol + '//' +
+                window.location.host + '/fight/' +
+                data.id + '?deck=' + this.dataset.deckId;
+        });
+    }
+
+    function addNewRow(data) {
+        const row = document.createElement('tr');
+        row.dataset.id = data['id'];
+
+        let column = undefined;
+
+        column = document.createElement('td');
+        column.innerText = data['user'];
+        row.append(column);
+
+        column = document.createElement('td');
+        column.innerText = data['victory'];
+        row.append(column);
+
+        column = document.createElement('td');
+        column.innerText = data['defeat'];
+        row.append(column);
+
+        column = document.createElement('td');
+        const btn = document.createElement('button');
+        btn.innerText = 'Join';
+        btn.classList.add('btn');
+        btn.classList.add('btn-success');
+        btn.dataset.toggle = 'modal';
+        btn.dataset.target = '#decksModal';
+
+        btn.addEventListener('click', () => {
+            chosen = data['id'];
+        });
+
+        column.append(btn);
+        row.append(column);
+
+        if (document.getElementById('no-fight')) {
+            document.getElementById('no-fight').remove();
+        }
+        document.querySelector('table tbody').appendChild(row);
+    }
+
+    function removeRow(data) {
+        const row = document.querySelector(`[data-id='${data.id}'`);
+
+        if (row) {
+            row.remove();
+        }
+    }
+
+    document.getElementById('decksModal').addEventListener('hide.bs.modal', () => {
+        chosen = null;
+    })
+</script>

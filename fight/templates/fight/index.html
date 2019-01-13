@@ -1,0 +1,15 @@
+{% extends 'users.html' %}
+
+{% block title %} Fight {% endblock %}
+
+{% block content %}
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Fight</h1>
+        </div>
+    </div>
+
+    {% include 'fight/waiting.html' %}
+    {% include 'fight/history.html' with history=history %}
+
+{% endblock %}
