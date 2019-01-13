@@ -20,6 +20,25 @@
         </div>
     </div>
 
+    <div id="game" style="display: none;">
+        <div id="p1">
+            <div class="row mt-3">
+                <div class="col-12 text-center">Life: <span class="life"></span></div>
+            </div>
+            <div class="row cards"><!-- Auto generated --></div>
+        </div>
+
+        <hr>
+
+        <div id="p2">
+            <div class="row cards"><!-- Auto generated --></div>
+            <div class="row mb-3">
+                <div class="col-12 text-center">Life: <span class="life"></span></div>
+            </div>
+        </div>
+    </div>
+
+
     <script>
         addHistory('Waiting another player...');
 
@@ -81,8 +100,61 @@
 
         function startAction(data) {
             addHistory('Ready to start');
+            document.getElementById('game').style.display = 'block';
 
-            console.log(data);
+            console.log(firstPlayer, data.first);
+            console.log(secondPlayer, data.second);
+
+            let updatedData = [];
+            updatedData[0] = data.first;
+            updatedData[1] = data.second;
+
+            if(updatedData[0].user !== firstPlayer.id){
+                let tmp = updatedData[0];
+                updatedData[0] = updatedData[1];
+                updatedData[1] = tmp;
+            }
+
+            updatePlayerOne(updatedData[1]);
+            updatePlayerTwo(updatedData[0]);
+        }
+
+        function updatePlayerOne(data) {
+            document.querySelector('#game #p1 .life').innerText = data.life;
+
+            const cardsDiv = document.querySelector('#game #p1 .cards');
+            cardsDiv.innerHTML = '';
+            for (let i = 0; i < data.cards.length; i++) {
+                const col = document.createElement('div');
+                col.classList.add('col-3');
+
+                const img = document.createElement('img');
+                img.setAttribute('src', 'https://dummyimage.com/307x465');
+                img.classList.add('img-fluid');
+                img.style.padding = '6px';
+
+                col.appendChild(img);
+                cardsDiv.appendChild(col);
+            }
+        }
+
+        function updatePlayerTwo(data) {
+            document.querySelector('#game #p2 .life').innerText = data.life;
+
+            const cardsDiv = document.querySelector('#game #p2 .cards');
+            cardsDiv.innerHTML = '';
+            for (let i = 0; i < data.cards.length; i++) {
+                const col = document.createElement('div');
+                col.classList.add('col-3');
+
+                const img = document.createElement('img');
+                img.setAttribute('src', data.cards[i].img);
+                img.classList.add('img-fluid');
+                img.style.padding = '6px';
+
+                col.appendChild(img);
+                cardsDiv.appendChild(col);
+            }
         }
     </script>
 {% endblock %}

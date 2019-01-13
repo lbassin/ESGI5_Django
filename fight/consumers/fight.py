@@ -2,6 +2,10 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 import json
 
+from django.core import serializers
+
+from cards.models import Deck
+
 
 class FightConsumer(WebsocketConsumer):
     def __init__(self, *args, **kwargs):
@@ -68,6 +72,26 @@ class FightConsumer(WebsocketConsumer):
     def ready(self, event):
         print(event)
 
+        async_to_sync(self.channel_layer.group_send)(
+            'waiting',
+            {
+                'type': 'remove_room',
+                'id': self.room_id
+            }
+        )
+
+        cards1 = Deck.objects.get(id=event['data']['first']['deck']).cards.all()
+        player_one = {'user': event['data']['first']['id'], 'life': 3, 'cards': list()}
+        for card in json.loads(serializers.serialize('json', cards1)):
+            player_one['cards'].append(card['fields'])
+
+        cards2 = Deck.objects.get(id=event['data']['second']['deck']).cards.all()
+        player_two = {'user': event['data']['second']['id'], 'life': 3, 'cards': list()}
+        for card in json.loads(serializers.serialize('json', cards2)):
+            player_two['cards'].append(card['fields'])
+
         self.send(text_data=json.dumps({
-            'action': 'start'
+            'action': 'start',
+            'first': player_one,
+            'second': player_two
         }))

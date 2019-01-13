@@ -65,6 +65,9 @@
     socket.onmessage = function (e) {
         const data = JSON.parse(e.data);
         if (data.action === 'add') {
+            if (data['user'] === '{{ request.user.username }}') {
+                return;
+            }
             addNewRow(data);
         }
 
