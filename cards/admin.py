@@ -21,6 +21,9 @@ def import_cards():
             if bool(elem.get('img')) is False:
                 continue
 
+            if elem.get('attack') is None or elem.get('attack') <= 0:
+                continue
+
             card = Card.objects.create()
             if bool(elem.get('name')) is not False:
                 card.name = elem['name'] if elem['name'] != "" else ""

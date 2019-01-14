@@ -109,7 +109,7 @@
             updatedData[0] = data.first;
             updatedData[1] = data.second;
 
-            if(updatedData[0].user !== firstPlayer.id){
+            if (updatedData[0].user !== firstPlayer.id) {
                 let tmp = updatedData[0];
                 updatedData[0] = updatedData[1];
                 updatedData[1] = tmp;
@@ -149,6 +149,7 @@
 
                 const img = document.createElement('img');
                 img.setAttribute('src', data.cards[i].img);
+                img.setAttribute('alt', 'Attack: ' + data.cards[i].attack)
                 img.classList.add('img-fluid');
                 img.style.padding = '6px';
 
