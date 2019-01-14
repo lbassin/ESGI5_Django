@@ -12,7 +12,8 @@
                     <h5 class="card-title">{{ request.user.username }}</h5>
                     <div class="card-text">
                         <p>Cards : {{ request.user.profile.cards.count }}</p>
-                        <p>Victory : TODO</p>
+                        <p>Victory : {{ request.user.profile.victory }}</p>
+                        <p>Defeat : {{ request.user.profile.defeat }}</p>
                         <p>Credits : {{ request.user.profile.credits }}</p>
                     </div>
                     <a href="{% url 'users_dashboard' %}" class="btn btn-secondary">Dashboard</a>

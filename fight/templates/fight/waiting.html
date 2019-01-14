@@ -84,8 +84,8 @@
                 id: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
                 user: '{{ request.user.username }}',
                 deck: this.dataset.deckId,
-                victory: '-1',
-                defeat: '-1'
+                victory: {{ request.user.profile.victory }},
+                defeat: {{ request.user.profile.defeat }}
             };
 
             if (chosen) {

@@ -4,7 +4,8 @@ import json
 
 from django.core import serializers
 
-from cards.models import Deck
+from cards.models import Deck, Card
+from users.models import Profile
 
 
 class FightConsumer(WebsocketConsumer):
@@ -55,6 +56,14 @@ class FightConsumer(WebsocketConsumer):
     def receive(self, text_data=None, bytes_data=None):
         data = json.loads(text_data)
 
+        if data['action'] == 'defeat':
+            self.defeat(data)
+            return
+
+        if data['action'] == 'victory':
+            self.victory(data)
+            return
+
         async_to_sync(self.channel_layer.group_send)(
             self.room_group_name,
             {
@@ -95,3 +104,37 @@ class FightConsumer(WebsocketConsumer):
             'first': player_one,
             'second': player_two
         }))
+
+    def play(self, event):
+        attack = Card.objects.get(cardId=event['data']['card']).attack
+
+        self.send(text_data=json.dumps({
+            'action': 'play',
+            'player': event['data']['player'],
+            'attack': attack
+        }))
+
+    def update(self, event):
+        self.send(text_data=json.dumps({
+            'action': 'update',
+            'player': event['data']['player'],
+            'cards': event['data']['cards'],
+            'life': event['data']['life']
+        }))
+
+        if event['data']['life'] <= 0:
+            self.send(text_data=json.dumps({
+                'action': 'end',
+                'player': event['data']['player'],
+                'life': 0
+            }))
+
+    def defeat(self, event):
+        profile = Profile.objects.get(user_id=event['data']['player'])
+        profile.defeat = profile.defeat + 1
+        profile.save()
+
+    def victory(self, event):
+        profile = Profile.objects.get(user_id=event['data']['player'])
+        profile.victory = profile.victory + 1
+        profile.save()

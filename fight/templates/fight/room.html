@@ -26,14 +26,28 @@
                 <div class="col-12 text-center">Life: <span class="life"></span></div>
             </div>
             <div class="row cards"><!-- Auto generated --></div>
+            <div class="row">
+                <div class="col-12 text-center"><span class="status"></span></div>
+            </div>
         </div>
 
         <hr>
 
         <div id="p2">
+            <div class="col-12 text-center"><span class="status"></span></div>
             <div class="row cards"><!-- Auto generated --></div>
             <div class="row mb-3">
                 <div class="col-12 text-center">Life: <span class="life"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="endControls" style="display: none;">
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <a class="btn btn-success" style="color: #fff;" href="{% url 'fight_index' %}">
+                    Go back to rooms list
+                </a>
             </div>
         </div>
     </div>
@@ -53,6 +67,15 @@
         };
         let secondPlayer = null;
 
+        let waitingOtherPlayer = false;
+        let cardPlayed = {first: null, second: null};
+
+        let cards = [];
+        let life = 0;
+        let otherLife = 0;
+
+        let updateCount = 0;
+
         socket.onmessage = function (e) {
             const data = JSON.parse(e.data);
 
@@ -62,6 +85,18 @@
 
             if (data.action === 'start') {
                 startAction(data);
+            }
+
+            if (data.action === 'play') {
+                playAction(data);
+            }
+
+            if (data.action === 'update') {
+                updateAction(data);
+            }
+
+            if (data.action === 'end') {
+                endAction(data);
             }
         };
 
@@ -98,12 +133,16 @@
             }
         }
 
+        let readyDisplayed = false;
+
         function startAction(data) {
+            if (readyDisplayed) {
+                return;
+            }
+            readyDisplayed = true;
+
             addHistory('Ready to start');
             document.getElementById('game').style.display = 'block';
-
-            console.log(firstPlayer, data.first);
-            console.log(secondPlayer, data.second);
 
             let updatedData = [];
             updatedData[0] = data.first;
@@ -115,12 +154,14 @@
                 updatedData[1] = tmp;
             }
 
-            updatePlayerOne(updatedData[1]);
-            updatePlayerTwo(updatedData[0]);
+            updatePlayerTop(updatedData[1]);
+            updatePlayerBottom(updatedData[0]);
         }
 
-        function updatePlayerOne(data) {
-            document.querySelector('#game #p1 .life').innerText = data.life;
+        function updatePlayerTop(data) {
+            otherLife = data.life;
+
+            document.querySelector('#game #p1 .life').innerText = otherLife;
 
             const cardsDiv = document.querySelector('#game #p1 .cards');
             cardsDiv.innerHTML = '';
@@ -136,26 +177,171 @@
                 col.appendChild(img);
                 cardsDiv.appendChild(col);
             }
+
+            updateStatusTop('Thinking...');
         }
 
-        function updatePlayerTwo(data) {
-            document.querySelector('#game #p2 .life').innerText = data.life;
+        function updatePlayerBottom(data) {
+            cards = data.cards;
+            life = data.life;
+
+            document.querySelector('#game #p2 .life').innerText = life;
 
             const cardsDiv = document.querySelector('#game #p2 .cards');
             cardsDiv.innerHTML = '';
-            for (let i = 0; i < data.cards.length; i++) {
+            for (let i = 0; i < cards.length; i++) {
                 const col = document.createElement('div');
                 col.classList.add('col-3');
 
                 const img = document.createElement('img');
-                img.setAttribute('src', data.cards[i].img);
-                img.setAttribute('alt', 'Attack: ' + data.cards[i].attack)
+                img.setAttribute('src', cards[i].img);
+                img.setAttribute('alt', 'Attack: ' + cards[i].attack);
+                img.dataset.cardId = cards[i].cardId;
                 img.classList.add('img-fluid');
                 img.style.padding = '6px';
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', selectCard);
 
                 col.appendChild(img);
                 cardsDiv.appendChild(col);
             }
+
+            updateStatusBottom('Choose a card!');
+        }
+
+        function selectCard() {
+            if (waitingOtherPlayer) {
+                return;
+            }
+
+            updateCount = 0;
+
+            updateStatusBottom('Waiting for other player');
+            disableCards();
+
+            cards = cards.filter((card) => card.cardId !== this.dataset.cardId);
+
+            socket.send(JSON.stringify({
+                action: 'play',
+                data: {
+                    player: firstPlayer.id,
+                    card: this.dataset.cardId
+                }
+            }));
+            console.log(firstPlayer);
+        }
+
+        function disableCards() {
+            waitingOtherPlayer = true;
+            const images = document.querySelectorAll('#game #p2 img');
+
+            for (let i = 0; i < images.length; i++) {
+                images[i].style.opacity = '0.3';
+                images[i].style.cursor = 'initial';
+            }
+        }
+
+        function enableCards() {
+            waitingOtherPlayer = false;
+            const images = document.querySelectorAll('#game #p2 img');
+
+            for (let i = 0; i < images.length; i++) {
+                images[i].style.opacity = '1';
+                images[i].style.cursor = 'cursor';
+            }
+        }
+
+        function updateStatusTop(text) {
+            document.querySelector('#game #p1 .status').innerText = text;
+        }
+
+        function updateStatusBottom(text) {
+            document.querySelector('#game #p2 .status').innerText = text;
+        }
+
+        function playAction(data) {
+            if (data.player === firstPlayer.id) {
+                cardPlayed.first = data.attack
+            } else {
+                cardPlayed.second = data.attack
+            }
+
+            if (cardPlayed.first && cardPlayed.second) {
+                updateStatusTop('');
+
+                if (cardPlayed.first > cardPlayed.second) {
+                    updateStatusBottom('You card is better');
+                } else if (cardPlayed.first < cardPlayed.second) {
+                    updateStatusBottom('The other player card is better');
+                    life -= 1;
+                } else {
+                    updateStatusBottom('Both cards are equal');
+                    life -= 1;
+                }
+
+                socket.send(JSON.stringify({
+                    action: 'update',
+                    data: {
+                        player: firstPlayer.id,
+                        life: life,
+                        cards: cards
+                    }
+                }));
+
+                cardPlayed = {first: null, second: null};
+                enableCards();
+            }
+        }
+
+        function updateAction(data) {
+            if (data.player === firstPlayer.id) {
+                updatePlayerBottom(data);
+            } else {
+                updatePlayerTop(data);
+            }
+
+            updateCount += 1;
+        }
+
+        let endDisplayed = false;
+        let gameStatus = '';
+
+        function endAction(data) {
+            console.log(data);
+            if (updateCount < 2) {
+                console.log('WAIT');
+                setTimeout(endAction, 1000, data);
+                return;
+            }
+
+            if (endDisplayed) {
+                return;
+            }
+            endDisplayed = true;
+
+            document.getElementById('game').style.display = 'none';
+            addHistory('End of the party');
+            if (life <= 0 && otherLife <= 0) {
+                addHistory('You are both dead');
+                addHistory('DRAW');
+            } else if (life <= 0) {
+                addHistory('You are dead');
+                addHistory('DEFEAT');
+                gameStatus = 'defeat';
+            } else if (otherLife <= 0) {
+                addHistory('The other player is dead');
+                addHistory('VICTORY');
+                gameStatus = 'victory';
+            }
+
+            socket.send(JSON.stringify({
+                action: gameStatus,
+                data: {player: firstPlayer.id}
+            }));
+
+            console.log(gameStatus, firstPlayer);
+
+            document.getElementById('endControls').style.display = 'block';
         }
     </script>
 {% endblock %}

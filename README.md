@@ -11,7 +11,7 @@ python manage.py loaddata packages
 - [X] Constituer des decks, les enregistrer pour les réutiliser plus tard
 - [X] Echanger des cartes avec un autre joueur (troc)
 - [X] Vendre des cartes
-- [ ] Jouer contre un autre joueur
+- [X] Jouer contre un autre joueur
 - [ ] Jouer contre un personnage non joueur, préconfiguré par l'administrateur
 - [X] Suivre d'autres joueurs (vous aurez alors des informations sur leurs dernières actions dans votre flux d'actualité)
 - [X] Discuter avec d'autres membres via des forums

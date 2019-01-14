@@ -31,6 +31,8 @@ class Profile(models.Model):
     credits = models.IntegerField(default=STARTUP_CREDITS)
     cards = models.ManyToManyField(Card)
     following = models.ManyToManyField(User, name='following', related_name='followers')
+    defeat = models.IntegerField(default=0)
+    victory = models.IntegerField(default=0)
 
 
 @receiver(post_save, sender=User)
