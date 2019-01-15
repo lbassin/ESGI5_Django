@@ -4,3 +4,5 @@ psycopg2-binary
 requests
 channels
 channels_redis
+gunicorn
+django-heroku
