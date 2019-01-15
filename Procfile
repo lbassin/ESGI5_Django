@@ -1,1 +1,1 @@
-web: gunicorn hello:app
+web: gunicorn hearthstone.wsgi --log-file -
