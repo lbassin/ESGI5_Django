@@ -1,2 +1,1 @@
-release: python manage.py migrate
-web: gunicorn hearthstone.wsgi --log-file -
+web: rerun "PYTHONUNBUFFERED=true python manage.py runserver"

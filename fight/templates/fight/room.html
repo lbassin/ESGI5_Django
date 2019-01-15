@@ -228,7 +228,6 @@
                     card: this.dataset.cardId
                 }
             }));
-            console.log(firstPlayer);
         }
 
         function disableCards() {
@@ -269,13 +268,18 @@
             if (cardPlayed.first && cardPlayed.second) {
                 updateStatusTop('');
 
+                addHistory(`Your card: ${cardPlayed.first} | Opponent card: ${cardPlayed.second}`);
+
                 if (cardPlayed.first > cardPlayed.second) {
-                    updateStatusBottom('You card is better');
+                    updateStatusBottom('Your card is better');
+                    addHistory('You won this round');
                 } else if (cardPlayed.first < cardPlayed.second) {
                     updateStatusBottom('The other player card is better');
+                    addHistory('You lose this round');
                     life -= 1;
                 } else {
                     updateStatusBottom('Both cards are equal');
+                    addHistory('Noboby won this round, you both lose one HP');
                     life -= 1;
                 }
 
@@ -309,8 +313,7 @@
         function endAction(data) {
             console.log(data);
             if (updateCount < 2) {
-                console.log('WAIT');
-                setTimeout(endAction, 1000, data);
+                setTimeout(endAction, 250, data);
                 return;
             }
 
@@ -338,8 +341,6 @@
                 action: gameStatus,
                 data: {player: firstPlayer.id}
             }));
-
-            console.log(gameStatus, firstPlayer);
 
             document.getElementById('endControls').style.display = 'block';
         }

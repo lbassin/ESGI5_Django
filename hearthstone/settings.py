@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -25,7 +24,7 @@ SECRET_KEY = 'yv400stsa!y$)y9rkee34i$z+ea@=6*_n8%_xqbtyd^mli166g'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['ancient-stream-52275.herokuapp.com', '0.0.0.0', '127.0.0.1']
 
 # Application definition
 
@@ -85,10 +84,11 @@ WSGI_APPLICATION = 'hearthstone.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'HOST': 'db',
-        'PORT': 5432,
+        'NAME': os.environ.get('DB_NAME', 'postgres'),
+        'USER': os.environ.get('DB_USER', 'postgres'),
+        'PASSWORD': os.environ.get('DB_PASSWORD', ''),
+        'HOST': os.environ.get('DB_HOST', 'db'),
+        'PORT': os.environ.get('DB_PORT', 5432),
     }
 }
 
@@ -132,7 +132,7 @@ LOGIN_URL = '/users/login/'
 LOGIN_REDIRECT_URL = '/dashboard'
 LOGOUT_REDIRECT_URL = '/users/login'
 
-EMAIL_HOST = 'mailcatcher'
+EMAIL_HOST = os.environ.get('EMAIL_HOST', 'mailcatcher')
 
 STARTUP_CREDITS = 200
 CARDS_BY_DECK = 5
@@ -142,9 +142,8 @@ CHANNEL_LAYERS = {
     'default': {
         'BACKEND': 'channels_redis.core.RedisChannelLayer',
         'CONFIG': {
-            "hosts": [('redis', 6379)],
+            "hosts": [os.environ.get('REDIS_URL', 'redis://redis:6379')],
         },
     },
 }
 
-django_heroku.settings(locals())
