@@ -5,6 +5,7 @@ import json
 from django.core import serializers
 
 from cards.models import Deck, Card
+from history.models import History
 from users.models import Profile
 
 
@@ -134,7 +135,13 @@ class FightConsumer(WebsocketConsumer):
         profile.defeat = profile.defeat + 1
         profile.save()
 
+        history = History(user_id=event['data']['player'], text="Lose a fight", type="defeat")
+        history.save()
+
     def victory(self, event):
         profile = Profile.objects.get(user_id=event['data']['player'])
         profile.victory = profile.victory + 1
         profile.save()
+
+        history = History(user_id=event['data']['player'], text="Won a fight", type="victory")
+        history.save()
