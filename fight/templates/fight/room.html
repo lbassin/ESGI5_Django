@@ -102,6 +102,7 @@
 
         socket.onclose = function (e) {
             console.error('Chat socket closed unexpectedly');
+            alert('Connection closed');
         };
 
         function addHistory(text) {

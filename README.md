@@ -12,7 +12,7 @@ python manage.py loaddata packages
 - [X] Echanger des cartes avec un autre joueur (troc)
 - [X] Vendre des cartes
 - [X] Jouer contre un autre joueur
-- [ ] Jouer contre un personnage non joueur, préconfiguré par l'administrateur
+- [X] Jouer contre un personnage non joueur, préconfiguré par l'administrateur
 - [X] Suivre d'autres joueurs (vous aurez alors des informations sur leurs dernières actions dans votre flux d'actualité)
 - [X] Discuter avec d'autres membres via des forums
 - [X] Voir sa collection, et celle des autres joueurs

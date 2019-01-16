@@ -1,0 +1,219 @@
+{% extends 'base.html' %}
+
+{% block title %} Fight {% endblock %}
+
+{% block body %}
+    <!--suppress ALL -->
+    <div class="row">
+        <div class="col-12 text-center">
+            <h1>Fight</h1>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <textarea name="history"
+                      class="form-control"
+                      style="resize: none; height: 200px"
+                      title="history"
+                      readonly></textarea>
+        </div>
+    </div>
+
+    <div id="game" style="display: none;">
+        <div id="p1">
+            <div class="row mt-3">
+                <div class="col-12 text-center">Life: <span class="life"></span></div>
+            </div>
+            <div class="row cards"><!-- Auto generated --></div>
+            <div class="row">
+                <div class="col-12 text-center"><span class="status"></span></div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div id="p2">
+            <div class="col-12 text-center"><span class="status"></span></div>
+            <div class="row cards"><!-- Auto generated --></div>
+            <div class="row mb-3">
+                <div class="col-12 text-center">Life: <span class="life"></span></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="endControls" style="display: none;">
+        <div class="row mt-3">
+            <div class="col-12 text-center">
+                <a class="btn btn-success" style="color: #fff;" href="{% url 'fight_index' %}">
+                    Go back to rooms list
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        addHistory('Loading ...');
+
+        const player = {
+            life: 3,
+            cards: {{ cards }}
+        }
+
+        const bot = {
+            life: 3,
+            cards: {{ bot }}
+        }
+
+        function addHistory(text) {
+            document.querySelector('textarea[name=history').value += text + '\n';
+        }
+
+        function updatePlayerTop(data) {
+            otherLife = data.life;
+
+            document.querySelector('#game #p1 .life').innerText = otherLife;
+
+            const cardsDiv = document.querySelector('#game #p1 .cards');
+            cardsDiv.innerHTML = '';
+            for (let i = 0; i < data.cards.length; i++) {
+                const col = document.createElement('div');
+                col.classList.add('col-3');
+
+                const img = document.createElement('img');
+                img.setAttribute('src', 'https://dummyimage.com/307x465');
+                img.classList.add('img-fluid');
+                img.style.padding = '6px';
+
+                col.appendChild(img);
+                cardsDiv.appendChild(col);
+            }
+
+            updateStatusTop('Thinking...');
+        }
+
+        function updatePlayerBottom(data) {
+            cards = data.cards;
+            life = data.life;
+
+            document.querySelector('#game #p2 .life').innerText = life;
+
+            const cardsDiv = document.querySelector('#game #p2 .cards');
+            cardsDiv.innerHTML = '';
+            for (let i = 0; i < cards.length; i++) {
+                const col = document.createElement('div');
+                col.classList.add('col-3');
+
+                const img = document.createElement('img');
+                img.setAttribute('src', cards[i].img);
+                img.setAttribute('alt', 'Attack: ' + cards[i].attack);
+                img.dataset.cardId = cards[i].cardId;
+                img.classList.add('img-fluid');
+                img.style.padding = '6px';
+                img.style.cursor = 'pointer';
+                img.addEventListener('click', selectCard);
+
+                col.appendChild(img);
+                cardsDiv.appendChild(col);
+            }
+
+            updateStatusBottom('Choose a card!');
+        }
+
+        function updateStatusTop(text) {
+            document.querySelector('#game #p1 .status').innerText = text;
+        }
+
+        function updateStatusBottom(text) {
+            document.querySelector('#game #p2 .status').innerText = text;
+        }
+
+        function selectCard() {
+            updateCount = 0;
+            disableCards();
+
+            botCard = bot.cards[Math.floor(Math.random() * bot.cards.length)]
+
+            const cardPlayed = {
+                first: player.cards.find((card) => card.cardId === this.dataset.cardId).attack,
+                second: botCard.attack
+            }
+
+            player.cards = player.cards.filter((card) => card.cardId !== this.dataset.cardId);
+            bot.cards = bot.cards.filter((card) => card.cardId !== botCard.cardId);
+
+            updateStatusTop('');
+            addHistory(`Your card: ${cardPlayed.first} | Opponent card: ${cardPlayed.second}`);
+
+            if (cardPlayed.first > cardPlayed.second) {
+                updateStatusBottom('Your card is better');
+                addHistory('You won this round');
+                bot.life -= 1;
+            } else if (cardPlayed.first < cardPlayed.second) {
+                updateStatusBottom('The other player card is better');
+                addHistory('You lose this round');
+                player.life -= 1;
+            } else {
+                updateStatusBottom('Both cards are equal');
+                addHistory('Noboby won this round, you both lose one HP');
+                player.life -= 1;
+                bot.life -= 1;
+            }
+
+            updatePlayerTop(bot);
+            updatePlayerBottom(player);
+
+            if (player.life <= 0 && bot.life <= 0) {
+                addHistory('End of the party');
+                addHistory('You are both dead');
+                addHistory('DRAW');
+                endOfGame();
+                return;
+            }
+
+            if (player.life <= 0) {
+                addHistory('End of the party');
+                addHistory('You are dead');
+                addHistory('DEFEAT');
+                endOfGame();
+                return;
+            }
+
+            if (bot.life <= 0) {
+                addHistory('End of the party');
+                addHistory('The other player is dead');
+                addHistory('VICTORY');
+                endOfGame();
+                return;
+            }
+        }
+
+        function disableCards() {
+            const images = document.querySelectorAll('#game #p2 img');
+
+            for (let i = 0; i < images.length; i++) {
+                images[i].style.opacity = '0.3';
+                images[i].style.cursor = 'initial';
+            }
+        }
+
+        function enableCards() {
+            const images = document.querySelectorAll('#game #p2 img');
+
+            for (let i = 0; i < images.length; i++) {
+                images[i].style.opacity = '1';
+                images[i].style.cursor = 'cursor';
+            }
+        }
+
+        function endOfGame() {
+            document.getElementById('game').style.display = 'none';
+            document.getElementById('endControls').style.display = 'block';
+        }
+
+        document.getElementById('game').style.display = 'block';
+        updatePlayerTop(bot);
+        updatePlayerBottom(player);
+    </script>
+
+{% endblock %}

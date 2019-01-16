@@ -3,6 +3,7 @@
         <h2>Waiting room</h2>
     </div>
     <div class="col-6 text-right">
+        <button class="btn" data-toggle="modal" data-target="#decksModal" id="botBtn">Fight bot</button>
         <button class="btn btn-primary" data-toggle="modal" data-target="#decksModal">Create room</button>
     </div>
 </div>
@@ -61,6 +62,7 @@
 <script>
     const socket = new WebSocket('ws://' + window.location.host + '/ws/waiting/');
     let chosen = undefined;
+    let bot = false;
 
     socket.onmessage = function (e) {
         const data = JSON.parse(e.data);
@@ -92,10 +94,16 @@
                 data.id = chosen
             }
 
-            socket.send(JSON.stringify(data));
-            document.location.href = window.location.protocol + '//' +
-                window.location.host + '/fight/' +
-                data.id + '?deck=' + this.dataset.deckId;
+            if (!bot) {
+                socket.send(JSON.stringify(data));
+                document.location.href = window.location.protocol + '//' +
+                    window.location.host + '/fight/' +
+                    data.id + '?deck=' + this.dataset.deckId;
+            } else {
+                document.location.href = window.location.protocol + '//' +
+                    window.location.host + '/fight/bot' +
+                    '?deck=' + this.dataset.deckId;
+            }
         });
     }
 
@@ -148,5 +156,10 @@
 
     document.getElementById('decksModal').addEventListener('hide.bs.modal', () => {
         chosen = null;
-    })
+        bot = false;
+    });
+
+    document.getElementById('botBtn').addEventListener('click', () => {
+        bot = true;
+    });
 </script>
